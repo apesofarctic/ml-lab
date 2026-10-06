@@ -1,0 +1,334 @@
+{
+"01": {
+"a": "Imagine a robot that can do clever things. Some robots are clever because a person wrote down every single rule for them. Others are clever because you showed them a thousand examples and they worked out the rules themselves. The second kind is machine learning. Deep learning is the same idea, but the robot also figures out *what to even look at* instead of being told.",
+"hook": "Told the rules = AI. Worked out the rules = ML. Worked out what to look at too = DL."
+},
+"02": {
+"a": "If your spreadsheet has an answer column, you can play \"guess the answer\" — that's supervised. If it doesn't, all you can do is sort things into piles that look alike — that's unsupervised. And if something learns by being given points for good moves, like a video game, that's reinforcement.",
+"hook": "Answer column? Supervised. No answer column? You're sorting socks."
+},
+"03": {
+"a": "Batch learning is like cooking one giant pot of soup on Sunday and eating it all week — great until the ingredients go off. Online learning is cooking a fresh spoonful every time you're hungry, so it always tastes like today.",
+"hook": "One big pot on Sunday, or a fresh spoonful every time."
+},
+"03b": {
+"a": "Your table is too big to fit on the kitchen counter. So you don't put the whole thing down at once — you read one page, learn from it, throw it away, and pick up the next page. The book never fits, but you still read all of it.",
+"hook": "Too big for the counter, so read one page at a time."
+},
+"04": {
+"a": "One friend remembers every single person they've ever met, and to answer a question they flip through all those memories. Another friend just remembers two or three rules of thumb. The first needs a huge brain; the second fits in your pocket.",
+"hook": "Remember everyone, or remember the rule."
+},
+"05": {
+"a": "Most of the time the model isn't the problem — the food you fed it was. Not enough examples, wrong examples, messy examples, or examples that don't look like tomorrow's world. A perfect chef cannot save rotten ingredients.",
+"hook": "It's almost always the data, not the algorithm."
+},
+"06": {
+"a": "Before building something new, look at what other people already built with this. If nobody has ever solved your kind of problem this way, that's worth knowing on day one, not after three weeks.",
+"hook": "Check whether this has ever worked before you spend a month on it."
+},
+"07": {
+"a": "Building a model is like baking: you decide what you're making, buy ingredients, clean them, mix, taste, adjust, then serve it to guests — and keep checking it hasn't gone stale. Doing those steps out of order wastes the whole afternoon.",
+"hook": "Decide, gather, clean, mix, taste, serve, keep checking."
+},
+"08": {
+"a": "A single number is a dot. A row of numbers is a line of dots. A table is a page. A stack of pages is a book. A shelf of books is a shelf. That's all a tensor is — and the \"shape\" is just saying how many pages, rows and columns.",
+"hook": "Dot, line, page, book, shelf. Shape = how many of each."
+},
+"09": {
+"a": "\"Make customers happier\" is a wish, not a question a computer can answer. You have to turn it into \"which column am I guessing, and how will I know if I guessed well?\" Until you can write that down, there's nothing to build.",
+"hook": "Which column am I guessing, and how do I score it?"
+},
+"10": {
+"a": "The ingredients for your dinner are in four different shops, and one of them won't let you in without asking nicely. Gathering data is just doing the shopping trip, politely, and writing down where each thing came from.",
+"hook": "Four shops, one of them fussy. Do the shopping."
+},
+"11": {
+"a": "Before cooking with the ingredients, open every bag and look inside. Is it mouldy? Is it all one colour? Is this bag secretly the same as that bag? Ten minutes of looking saves a day of confusion.",
+"hook": "Open every bag and look before you cook."
+},
+"12": {
+"a": "The algorithm is a fairly simple machine. What you feed it matters far more than which machine you pick. Feature engineering is chopping, peeling and seasoning the ingredients so the machine can actually taste them.",
+"hook": "Two cooks, same recipe, different prep, different dinner."
+},
+"13": {
+"a": "One column counts in years (18 to 70), another counts in rupees (20,000 to 2,000,000). The model thinks the big numbers are more important just because they're big. Standardising rewrites everything as \"how unusual is this, compared to normal\" so they can argue fairly.",
+"hook": "Put everyone on the same scale so the loud number stops winning."
+},
+"14": {
+"a": "Same problem as standardising, different fix: instead of \"how unusual is this\", you just squash everything into the range 0 to 1, where 0 is the smallest you ever saw and 1 is the biggest.",
+"hook": "Squash everything between 0 and 1."
+},
+"15": {
+"a": "The computer can only do sums. It cannot multiply anything by the word \"Mumbai\". So you give each city its own yes/no switch, and flip the right one on. Now it's numbers, and sums work again.",
+"hook": "Give every word its own on/off switch."
+},
+"16": {
+"a": "Different columns need different treatment — some get scaled, some get switches, some get left alone. Instead of doing it by hand and forgetting one, you write down the instructions once and they get followed the same way every time.",
+"hook": "Write the prep instructions down once."
+},
+"17": {
+"a": "If you season the training food but forget to season the test food, the taste test is meaningless and you'll never spot the mistake. A pipeline staples the prep to the model so they can never drift apart.",
+"hook": "Staple the prep to the model so you can't forget a step."
+},
+"18": {
+"a": "Most people have ordinary incomes and a few have enormous ones, so the picture is lopsided. Taking a log squashes the giant end down, and suddenly the picture is a nice symmetric hill that a straight-line model can handle.",
+"hook": "Squash the long tail so the picture stops being lopsided."
+},
+"19": {
+"a": "Logs are great until your column has zeros or negatives, and then they break. A power transformer is a smarter squasher that finds the right amount of squashing for you, and copes with zeros.",
+"hook": "A squasher that picks its own strength and survives zeros."
+},
+"20": {
+"a": "Sometimes the exact number doesn't matter, only which bucket it falls in. Being 19 or 21 isn't very different, but \"teenager\" versus \"adult\" is. Binning throws away precision you never needed.",
+"hook": "Stop asking the exact number, ask which bucket."
+},
+"21": {
+"a": "Somebody stuffed two different things into one column — a letter code in some rows and a plain number in others. Pull them apart into two columns, because they mean two different things.",
+"hook": "Two things in one box. Unpack it."
+},
+"22": {
+"a": "A timestamp means nothing to a model — it's just a huge number. But \"Monday\", \"afternoon\" and \"weekend\" mean a lot. So pull the useful words out of the date and throw the raw number away.",
+"hook": "The date is useless. Monday and afternoon are not."
+},
+"23": {
+"a": "Some rows have holes in them. The easy fix is to bin those rows — which is completely fine if the holes happened at random, and completely misleading if the holes happened for a reason.",
+"hook": "Binning the holey rows is fine, unless the holes mean something."
+},
+"24": {
+"a": "You can't bin the rows, so you have to invent a number to put in the hole. Whatever you invent, you're lying slightly — the question is which lie does the least damage.",
+"hook": "You must invent a number. Pick the least damaging lie."
+},
+"25": {
+"a": "Same hole-filling problem, but the column holds words, not numbers. There's no average of \"Mumbai\". So you either use the most common word, or you honestly label it \"Missing\" and let the model decide what that means.",
+"hook": "No average of a word. Use the commonest, or say \"Missing\" out loud."
+},
+"26": {
+"a": "Instead of filling the hole with one number for everybody, look at the rows most similar to this one and borrow their answer. Your neighbours are a better guess than the whole street's average.",
+"hook": "Ask the most similar rows what they had."
+},
+"27": {
+"a": "Several columns have holes in different places, and the columns are related. So you guess one, use that to guess the next, go round the loop a few times, and let the guesses settle down together.",
+"hook": "Guess, re-guess, go round the loop until it stops wobbling."
+},
+"28": {
+"a": "One person in your data earns nine million. Every average, every scale, every line you fit is now really a statement about that one person. Outlier handling is deciding whether that person is real, and what to do about them.",
+"hook": "One giant number is quietly running your whole model."
+},
+"29": {
+"a": "The trouble with spotting weird values using the average is that the weird values have already poisoned the average. The IQR method uses the middle of the data instead, which the extremes can't reach.",
+"hook": "Measure weirdness from the middle, where the extremes can't reach."
+},
+"30": {
+"a": "You're fairly sure the top and bottom 1% are typing errors, but you can't afford to lose the rows. So you don't delete them — you just gently push them back to the edge of what's believable.",
+"hook": "Don't delete the extremes, push them back to the fence."
+},
+"31": {
+"a": "You have length, width and height in three columns and the model never works out on its own that what matters is the volume. So you multiply them yourself and hand it the answer.",
+"hook": "If you already know what matters, just build that column."
+},
+"32": {
+"a": "You'd think more columns means more information. Past a point, everything becomes so spread out that every row looks equally far from every other row, and \"nearest\" stops meaning anything. More is worse.",
+"hook": "Too many columns and everything becomes equally far from everything."
+},
+"33": {
+"a": "You have two hundred columns that all say roughly the same thing in slightly different ways. PCA finds the few directions in which the data actually varies, and describes everyone using just those — like describing people by height and build rather than forty separate measurements.",
+"hook": "Find the few directions that actually matter and ignore the rest."
+},
+"34": {
+"a": "You've got dots on a page and you want the straight line that sits closest to all of them. For each dot you measure how far off the line is, square it so direction doesn't matter, add it all up — and then pick the line where that total is as small as possible.",
+"hook": "Draw the line that leaves the smallest total squared miss."
+},
+"35": {
+"a": "Saying the model is \"good\" isn't enough. Is it typically off by ₹2,000 or ₹200,000? Does it explain most of the ups and downs or almost none? Different numbers answer different questions, and your boss wants one.",
+"hook": "\"Good\" isn't a number. Pick which kind of wrong you care about."
+},
+"36": {
+"a": "The price doesn't depend on just the size. It depends on size *and* bedrooms *and* age *and* how far the metro is, all pulling at once. Instead of one slope you now have one slope per thing.",
+"hook": "One slope per ingredient, all pulling at the same time."
+},
+"37": {
+"a": "You're standing on a foggy hill and want to get to the bottom. You can't see the bottom, but you can feel which way is downhill under your feet. So you take a step that way, feel again, and repeat. The size of your step is the learning rate — too big and you fly past the valley, too small and you're there all week.",
+"hook": "Feel which way is down. Take a step. Repeat."
+},
+"38": {
+"a": "Feeling the slope using all ten million rows is very accurate and painfully slow. Feeling it using one row is instant and very wobbly. Using a small handful each time is the sensible middle, which is why nearly everyone does that.",
+"hook": "All the rows is slow, one row is wobbly, a handful is just right."
+},
+"39": {
+"a": "The dots clearly curve, and no straight line will ever fit a curve — not with more data, not with more patience. So you let the line bend by also feeding in x squared, x cubed, and so on.",
+"hook": "Let the line bend by feeding in x², x³."
+},
+"40": {
+"a": "A model that's too simple is wrong in the same way every time, like a clock stuck at 3 o'clock. A model that's too fancy changes its mind completely every time you show it slightly different data. You want the quiet middle.",
+"hook": "Stuck clock, or changes its mind every day. Aim between."
+},
+"41": {
+"a": "When the model is allowed huge weights it starts inventing wild stories to fit every dot exactly. Ridge adds a fee for big weights, so the model only keeps a big weight when the data really insists.",
+"hook": "Charge rent on big weights so the model stops showing off."
+},
+"42": {
+"a": "Same idea as Ridge, but with a fee shaped so that weak features don't get shrunk small — they get pushed to exactly zero and disappear. The model hands you a shortlist of what actually mattered.",
+"hook": "Charge rent in a way that evicts the useless features entirely."
+},
+"43": {
+"a": "Lasso is great at throwing things away, but when two columns are twins it arbitrarily keeps one and bins the other. Elastic Net mixes both fees so twins are kept or dropped together.",
+"hook": "Mix both fees so twin columns stay together."
+},
+"44": {
+"a": "Draw a line between the two groups. Every time you catch a dot on the wrong side, nudge the line a bit towards being right about that dot. Keep going. That's the whole trick.",
+"hook": "Got one wrong? Nudge the line towards it. Repeat."
+},
+"45": {
+"a": "Your straight-line machine happily shouts \"7.8!\" when you asked for a probability. The sigmoid is a squasher: whatever number you give it, it hands back something between 0 and 1. Huge becomes nearly 1, very negative becomes nearly 0, and zero becomes exactly half.",
+"hook": "Any number in, something between 0 and 1 out."
+},
+"46": {
+"a": "We need a score for how wrong a probability was. If you said 99% and were wrong, that should hurt a lot more than saying 51% and being wrong. Log loss does exactly that — it punishes confident mistakes brutally.",
+"hook": "Being confidently wrong should hurt the most. That's log loss."
+},
+"47": {
+"a": "A test that says \"you don't have the disease\" to everybody is right 99% of the time, and completely useless. Accuracy alone can't see that. The confusion matrix shows the four things that can happen, so the uselessness becomes visible.",
+"hook": "99% right and completely useless. Look at all four boxes."
+},
+"48": {
+"a": "Of everyone you flagged, how many actually were? That's precision. Of everyone who actually was, how many did you catch? That's recall. Catching more always means flagging more innocents — you can't have both, so choose on purpose.",
+"hook": "Of those I flagged, how many were real? Of the real ones, how many did I catch?"
+},
+"49": {
+"a": "With two classes you get one precision number. With seven classes you get seven, and somebody still wants a single number. You either average them fairly per class, or let the big classes dominate — and those answer different questions.",
+"hook": "Seven scores, one answer wanted. Decide who gets a vote."
+},
+"50": {
+"a": "Sigmoid gives one probability, which is fine for yes/no. For ten digits you need ten probabilities that add up to exactly 1 — because it must be *some* digit. Softmax does that sharing-out.",
+"hook": "Ten scores shared out so they add up to one whole."
+},
+"51": {
+"a": "Your two groups are separated by a circle, not a line, and a straight line will never manage it. Same fix as before: feed in squared terms and the straight line in the new space becomes a curve in the old one.",
+"hook": "Feed it squares, and the straight line becomes a circle."
+},
+"52": {
+"a": "Logistic regression has a few dials: how hard to punish complexity, how long to keep trying, and how to weight rare classes. Nearly all \"it won't converge\" warnings are one of those dials set wrong.",
+"hook": "Three dials, and the warning you keep ignoring is one of them."
+},
+"53": {
+"a": "The model says 0.43. Is that a yes? That depends entirely on where you put the cutoff, and somebody has to choose. The ROC curve shows what happens at every possible cutoff at once, so you can choose with your eyes open.",
+"hook": "Try every cutoff at once and look at the shape."
+},
+"54": {
+"a": "It's a game of twenty questions. \"Is the income above 50,000?\" Yes, go left. \"Have they defaulted before?\" No, go right. Keep asking until you reach an answer. You can print it out and a human can follow it.",
+"hook": "Twenty questions, written down so a human can follow it."
+},
+"55": {
+"a": "At each step the tree has to choose which question to ask. A good question splits a messy mixed-up group into two tidier groups. Entropy and Gini measure how messy a group is, and information gain measures how much tidier the question made things.",
+"hook": "Ask the question that tidies the pile the most."
+},
+"56": {
+"a": "Same twenty-questions game, but at the end of each branch instead of a label you put the average price of everyone who ended up there. The questions are chosen to make the groups as similar in price as possible.",
+"hook": "Same questions, but each leaf holds an average instead of a label."
+},
+"57": {
+"a": "If you let the tree keep asking questions it will eventually have one question per person, and it will be perfect on the people it has met and useless on everyone else. Pruning is telling it to stop while the rules are still general.",
+"hook": "Make it stop asking before it memorises everybody."
+},
+"58": {
+"a": "Four mediocre models that make *different* mistakes are better together than any one of them alone, because their errors partly cancel out. A committee of average people beats one average person.",
+"hook": "Many mediocre opinions beat one mediocre opinion, if they differ."
+},
+"59": {
+"a": "Three models disagree. Hard voting counts hands. Soft voting listens to how confident each one is — which matters when two say \"yes, probably\" and one says \"absolutely not\".",
+"hook": "Count hands, or weigh how sure each voice is."
+},
+"60": {
+"a": "Trees are twitchy — change a few rows and you get a completely different tree. So grow lots of them on slightly different samples of the data and average them. The twitchiness cancels out.",
+"hook": "Grow many twitchy trees and average the twitch away."
+},
+"61": {
+"a": "Bagged trees still all grab the same obvious column first, so they end up alike and don't cancel much. Random forest hides most columns at each split, forcing the trees to disagree — and disagreement is the whole product.",
+"hook": "Hide some columns so the trees are forced to disagree."
+},
+"62": {
+"a": "Because each tree only saw part of the data, every row was left out of some trees. Ask only those trees about that row and you get a free honest test, without setting any data aside.",
+"hook": "Ask the trees that never saw this row. Free test set."
+},
+"63": {
+"a": "The model works and someone asks which columns drove it. The quick built-in answer flatters columns with lots of distinct values. More honest: shuffle a column and see how much worse things get.",
+"hook": "Shuffle a column. If nothing gets worse, it never mattered."
+},
+"64": {
+"a": "You split once, scored 0.86, felt good. Split differently and you get 0.79. Neither is the truth. So split several ways, score each, and take the average — and test your dial settings the same way.",
+"hook": "One split is luck. Split five ways and average."
+},
+"65": {
+"a": "Train a weak model. Find what it got wrong. Make those rows heavier so the next model is forced to care about them. Repeat. Each new model is specifically hired to fix the last one's mistakes.",
+"hook": "Make the mistakes heavier so the next model has to care."
+},
+"66": {
+"a": "Bagging grows lots of models independently and averages away the wobble. Boosting grows them in a line, each fixing the last one's errors. Wobbly model? Bag it. Too-simple model? Boost it.",
+"hook": "Too wobbly, bag it. Too simple, boost it."
+},
+"67": {
+"a": "AdaBoost reweights rows, which is awkward for predicting a number. So instead each new tree predicts the *leftover error* of everything so far, and you add it on. Keep adding corrections until the leftovers are small.",
+"hook": "Each new tree predicts what's still missing, then you add it on."
+},
+"68": {
+"a": "Gradient boosting that has been engineered for speed and for not overfitting: it builds trees cleverly, adds the complexity fee from Ridge and Lasso, and knows what to do with missing values on its own.",
+"hook": "Gradient boosting with brakes, seatbelts and a faster engine."
+},
+"69": {
+"a": "XGBoost is still slow on ten million rows and hates columns with thousands of categories. LightGBM grows trees in a cheaper shape; CatBoost handles categories natively instead of making 3,000 switch columns.",
+"hook": "One grows cheaper trees, the other speaks categories natively."
+},
+"70": {
+"a": "Rather than averaging your models equally, train one small extra model whose only job is to learn how much to trust each of them, and when.",
+"hook": "Train a referee that learns which model to believe."
+},
+"71": {
+"a": "To guess something about a new person, find the handful of people in your records who are most like them, and see what those people did. No training at all — but you have to measure the distance to everybody, every single time you're asked.",
+"hook": "Tell me who your neighbours are and I'll tell you what you are."
+},
+"72": {
+"a": "Lots of different lines separate the two groups perfectly. Which is best? The one with the widest empty corridor on either side, because a new dot has the most room to land before it crosses.",
+"hook": "Pick the line with the widest empty corridor."
+},
+"73": {
+"a": "In real data the groups overlap a bit, so no line separates them perfectly and the widest-corridor rule has no answer. So you let a few dots sit inside the corridor, and the C dial decides how annoyed you are about that.",
+"hook": "Let a few dots break the rules, and set how much that annoys you."
+},
+"74": {
+"a": "The groups are separated by a curve, not a line. In a higher-dimensional space it *would* be a flat line — but that space is impossibly big to build. The trick: you never need the space itself, only distances in it, and those you can compute directly.",
+"hook": "You never build the bigger space. You only need distances in it."
+},
+"75": {
+"a": "To spot spam you'd really want to know how all 50,000 words interact — far more than any data can tell you. So you pretend every word is independent of the others. That's plainly false, and it works remarkably well anyway.",
+"hook": "Pretend the words ignore each other. A lie that works."
+},
+"76": {
+"a": "You have a crowd and no name tags, and you want four groups. Drop four flags at random. Everyone walks to the nearest flag. Each flag moves to the middle of its own crowd. Repeat until nobody moves.",
+"hook": "Walk to the nearest flag, flag moves to the middle, repeat."
+},
+"77": {
+"a": "You don't know how many groups there are, and K-Means makes you say up front. So instead start with everyone in their own group, repeatedly merge the two closest, and draw the family tree. Then cut it wherever you like.",
+"hook": "Merge the closest two, over and over, then cut the tree where you like."
+},
+"78": {
+"a": "K-Means forces every single dot into a cluster, including the nonsense ones. DBSCAN instead grows clusters wherever dots are crowded together, and anything in the empty space gets called noise and left alone.",
+"hook": "Grow clusters where it's crowded. Leave the stragglers out."
+},
+"79": {
+"a": "You want to put 50-dimensional data on a flat page. PCA keeps the big straight directions and can smear curved structure into a blob. t-SNE instead tries to keep *neighbours* neighbours, which is usually what you wanted to see.",
+"hook": "Keep neighbours next to each other, and never mind the rest."
+},
+"80": {
+"a": "If 99.2% of transactions are fine, a model that just says \"fine\" every time scores 99.2% and catches no fraud at all. You have to either show it more of the rare thing, or make missing the rare thing much more expensive.",
+"hook": "Make the rare thing either more common or more costly to miss."
+},
+"81": {
+"a": "Trying every combination of six dials means 15,625 runs and you have time for 60. So instead of trying blindly, use what the earlier runs told you to decide where to look next.",
+"hook": "Don't search blindly. Let the early results aim the later ones."
+},
+"82": {
+"a": "Scoring 0.89 in a notebook is not a working product. It has to answer requests at 3am, prepare the data in exactly the same way it did in training, and shout when the world stops looking like the data it learned from.",
+"hook": "A notebook score isn't a product. It needs to run, match, and shout."
+}
+}

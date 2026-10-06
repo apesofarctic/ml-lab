@@ -1,0 +1,364 @@
+{
+"33:1": {
+"goal": "We want one direction in space such that, if we flatten all the data onto it, we keep as much of the spread as possible. We need to turn \"keep the most spread\" into something we can actually maximise.",
+"plan": "Write the variance of the projected data in terms of the direction u, and watch a familiar matrix fall out.",
+"steps": [
+"Project every row onto the direction u and take the variance. Pure algebra turns the sum of squared projections into u-transpose, something, u — the something is the same for every direction.",
+"That something gets a name: the covariance matrix. It is computed once from the data and never changes; only u varies.",
+"So the whole question becomes: which unit-length u makes u'Σu biggest? The length constraint matters — without it you could cheat by making u longer instead of better-aimed."
+],
+"payoff": "PCA is no longer vague. It is one clean optimisation: maximise u'Σu over unit vectors."
+},
+"33:2": {
+"goal": "Maximise u'Σu, but only over directions of length 1. We cannot just differentiate and set to zero, because that ignores the length constraint.",
+"plan": "Lagrange multipliers: fold the constraint into the thing being maximised, then differentiate normally.",
+"steps": [
+"Build the Lagrangian — the objective minus λ times (constraint violation). λ is a price we pay for breaking the length rule.",
+"Differentiate and set to zero. Everything collapses to Σu = λu, which is the definition of an eigenvector. We never set out to find eigenvectors; they appeared because the problem forced them.",
+"Multiply both sides by u' and use u'u = 1: the variance captured by a direction is exactly its eigenvalue."
+],
+"payoff": "Two facts for the price of one. The best directions are the eigenvectors of Σ, and each one's eigenvalue tells you how much variance it keeps — which is why you sort by eigenvalue and take the top k."
+},
+"33:3": {
+"goal": "Turn the chosen directions into an actual smaller dataset, and know exactly what was thrown away.",
+"plan": "Stack the best k eigenvectors as a matrix and multiply.",
+"steps": [
+"Each row gets projected onto the k kept directions. p numbers become k numbers — that is the dimension reduction, and it is one matrix multiply.",
+"Going back the other way reconstructs an approximation of the original rows, and adding the mean back undoes the centring."
+],
+"payoff": "The reconstruction error equals the sum of the eigenvalues you discarded. Nothing is mysterious about the loss — you chose it when you chose k."
+},
+"34:0": {
+"goal": "Find the intercept c that makes the total squared error as small as possible.",
+"plan": "The error is a smooth bowl in c. The bottom of a bowl is where the slope is zero, so differentiate with respect to c and set it to zero.",
+"steps": [
+"Differentiate the sum of squared errors with respect to c. Each term contributes 2×(error)×(−1) by the chain rule, and we set the total to zero.",
+"Divide through and rearrange. The sums turn into averages and c pops out on its own."
+],
+"payoff": "c = ȳ − m·x̄. Read it as a sentence: the line must pass through the average point. Whatever slope you end up with, the intercept is forced to put the line through the centre of the data."
+},
+"34:1": {
+"goal": "Now find the slope m. Same bowl, different direction.",
+"plan": "Differentiate with respect to m, set to zero, then substitute the c we already found so only m is left.",
+"steps": [
+"Differentiate with respect to m. Chain rule again, but now the inner derivative is −x, so every term is weighted by its own x.",
+"Substitute the intercept we solved for a moment ago. This is the key move: one unknown is eliminated, leaving an equation in m alone.",
+"Gather all the m terms on one side. Ordinary algebra, no new ideas.",
+"Rewrite the sums using the centred identities. Both sides turn out to be familiar statistics."
+],
+"payoff": "m = Cov(x,y) / Var(x). The slope is how much x and y move together, divided by how much x moves on its own. That is the whole of simple linear regression, and it is why a feature with no variance gives you a divide-by-zero."
+},
+"34:2": {
+"goal": "Do the same thing when there are hundreds of features, without writing hundreds of partial derivatives.",
+"plan": "Put everything in matrix form, where one derivative does the work of all of them at once.",
+"steps": [
+"Write the total squared error as the squared length of the residual vector. Identical quantity, compact notation.",
+"Differentiate with respect to the whole weight vector at once and set it to zero. This gives the normal equations.",
+"Multiply by the inverse to isolate β."
+],
+"payoff": "One formula for any number of features, and with a single feature it collapses back to the m and c above. It also shows the weakness: if two columns are near-copies, X'X is nearly singular, the inverse blows up, and the coefficients become nonsense."
+},
+"36:0": {
+"goal": "Set up multiple regression so the intercept is not a special case needing its own rule.",
+"plan": "Glue a column of ones onto the data matrix.",
+"steps": [
+"The leading column of ones means β₀ gets multiplied by 1 for every row — so the intercept becomes just another weight.",
+"Now the whole error is one expression: the squared length of y − Xβ."
+],
+"payoff": "No separate intercept logic anywhere downstream. One matrix, one vector of weights, one error expression."
+},
+"36:1": {
+"goal": "Find the weight vector that minimises that error.",
+"plan": "Expand the squared length into three terms, differentiate, set to zero.",
+"steps": [
+"Multiply out (y − Xβ)'(y − Xβ). You get a constant, a linear term in β, and a quadratic term in β — exactly the shape of a bowl.",
+"Differentiate: the constant vanishes, the linear term gives a constant, the quadratic gives 2X'Xβ. Set the whole thing to zero.",
+"Rearrange into the normal equations and invert."
+],
+"payoff": "The same closed form as before. The second derivative is 2X'X, which is never negative, so this stationary point is genuinely the minimum and not a maximum or a saddle."
+},
+"36:2": {
+"goal": "Explain why correlated features make coefficients wobble, rather than just asserting it.",
+"plan": "Write down the variance of a single fitted coefficient and look at what sits in the denominator.",
+"steps": [
+"The variance of coefficient j has (1 − R²ⱼ) in its denominator, where R²ⱼ measures how well the other features predict feature j. If the others predict it well, that bracket approaches zero.",
+"Name that factor: the Variance Inflation Factor, 1/(1 − R²)."
+],
+"payoff": "At R² = 0.9 the VIF is 10, so the coefficient's variance is ten times larger than it needed to be. The model still predicts fine — it is the individual coefficients, and any story you tell about them, that became unreliable."
+},
+"37:1": {
+"goal": "We need the slope of the loss with respect to each parameter, because gradient descent cannot take a step without knowing which way is downhill.",
+"plan": "Apply the chain rule to the mean squared error, once for m and once for c.",
+"steps": [
+"Write the loss. Nothing clever yet — this is just the average squared miss, and we name the per-row error e so the next lines stay readable.",
+"Differentiate with respect to m. The outer square gives 2e, the inner derivative of e with respect to m is −x, so each row contributes 2e×(−x).",
+"Tidy the constants. This is the gradient for the slope: each row's error, weighted by its own x. Rows with large x have more say in how the slope moves.",
+"Now the same for c. The inner derivative is just −1, because changing the intercept moves every prediction equally.",
+"Tidy again. The gradient for the intercept is simply the average error — no x weighting, because the intercept treats all rows alike."
+],
+"payoff": "Two numbers that say which way is downhill. Feed them into new = old − η × slope and you have gradient descent. Notice both still contain (y − ŷ): when the predictions are right, the gradients are zero and the parameters stop moving."
+},
+"40:0": {
+"goal": "Prove that expected error splits into three separate pieces, rather than just drawing the U-shaped curve and hoping.",
+"plan": "Add and subtract the average prediction, then square. The cross-terms will vanish.",
+"steps": [
+"Start from the expected squared error over all possible training sets — not just the one you have. This is the thing we actually care about.",
+"Insert and subtract f̄, the average prediction across training sets. Adding zero in a useful disguise is the whole trick: the error is now three named pieces.",
+"Square and take expectations. The cross-terms die because the noise has zero mean and is independent of the training set, and because f̄ is by definition the average of f̂."
+],
+"payoff": "Error = bias² + variance + irreducible noise. The third term is a floor you can never get under no matter how good the model is, and the first two trade off against each other — which is why making a model more flexible helps right up until it doesn't."
+},
+"41:1": {
+"goal": "Find the ridge coefficients, and see precisely what the penalty changes.",
+"plan": "Repeat the OLS derivation with one extra term bolted onto the loss.",
+"steps": [
+"The loss is the usual squared error plus λ times the squared length of β. The second term is a fee that grows as the weights grow.",
+"Differentiate. The fee contributes 2λβ — it is linear in β, so it survives differentiation in the simplest possible way.",
+"Rearrange. The λ term collects onto the left as +λI, added to the same X'X that OLS had.",
+"Invert and solve, exactly as in OLS."
+],
+"payoff": "The only difference from OLS is +λI inside the inverse. Adding a positive number down the diagonal makes the matrix invertible even when columns are collinear — so ridge does not just shrink coefficients, it repairs the exact situation that made OLS unstable."
+},
+"42:1": {
+"goal": "Show that \"ridge shrinks, lasso deletes\" is literally true, not just a picture.",
+"plan": "In the simplest case (uncorrelated features) both have closed forms. Compare them side by side.",
+"steps": [
+"Ridge divides each OLS coefficient by (1 + λ). Dividing a non-zero number can make it small, but never exactly zero.",
+"Lasso subtracts λ/2 from the magnitude and clips at zero. Subtraction can and does cross zero, and the clip holds it there."
+],
+"payoff": "Division versus subtraction. That single difference is why lasso hands you a shortlist of features and ridge hands you a full set of small numbers."
+},
+"42:2": {
+"goal": "Explain where the exact-zero behaviour comes from, given that |β| has no derivative at zero.",
+"plan": "Use the subgradient — the set of all slopes that sit below the function at that point.",
+"steps": [
+"Write the one-coefficient problem: squared distance from the OLS answer, plus λ times the absolute value.",
+"At zero the absolute value has a whole interval of valid slopes, [−1, 1], instead of a single one. That interval is the kink."
+],
+"payoff": "Setting zero inside the subgradient gives a condition that is satisfiable whenever |b| ≤ λ/2. The coefficient is not shrunk to nearly zero — zero is genuinely optimal, which is why lasso selects features instead of merely shrinking them."
+},
+"45:2": {
+"goal": "Find the derivative of the sigmoid, because every gradient in logistic regression and every neural network will need it.",
+"plan": "Differentiate it directly, then recognise the pieces.",
+"steps": [
+"Apply the quotient rule to (1 + e^−z)^−1. Mechanical calculus, nothing interesting yet.",
+"Split the single fraction into two factors on purpose. The first factor is σ(z) itself; the second turns out to be 1 − σ(z).",
+"So the derivative is σ(1 − σ)."
+],
+"payoff": "The derivative is written entirely in terms of the output you already computed. During training you have σ(z) sitting in memory from the forward pass, so the backward pass costs one multiplication instead of a fresh exponential. It is also why gradients vanish when σ is near 0 or 1 — the product collapses."
+},
+"45:3": {
+"goal": "Understand what the linear part w'x + b actually means once the sigmoid is wrapped around it.",
+"plan": "Run the sigmoid backwards: given a probability, recover z.",
+"steps": [
+"Solve p = σ(z) for z, one algebraic step at a time, until z is alone.",
+"What comes out is the logarithm of p/(1−p)."
+],
+"payoff": "p/(1−p) is the odds, so logistic regression is a linear model of the log-odds, not of the probability. That is why a coefficient means \"a one-unit increase multiplies the odds by e^w\" — and why the probability curve bends while the log-odds line stays straight."
+},
+"46:2": {
+"goal": "Turn \"pick the parameters that make the observed data most likely\" into a loss we can minimise.",
+"plan": "Take the log of the likelihood, then flip the sign.",
+"steps": [
+"Logging turns a product over all rows into a sum, which stops hundreds of small probabilities from underflowing to exactly zero, and does not move the maximum because log is increasing.",
+"Negate and average so we are minimising rather than maximising, and the value does not grow with dataset size."
+],
+"payoff": "Log loss is not an arbitrary choice of penalty — it is maximum likelihood with a minus sign in front. That is why it is the right loss for logistic regression and squared error is not."
+},
+"46:3": {
+"goal": "Get the gradient of log loss with respect to the weights.",
+"plan": "Chain rule in two hops: loss to probability, probability to score, score to weights. Watch what cancels.",
+"steps": [
+"Differentiate the loss with respect to p. The two cases combine into a single fraction with p(1−p) underneath.",
+"Now multiply by dp/dz, which we proved is p(1−p). The denominator and the new factor cancel exactly, leaving p − y.",
+"One more hop: dz/dw = x, giving (p − y)x."
+],
+"payoff": "The gradient is (prediction − truth) × input. That cancellation is the whole reason this loss is used: it is the same clean form as linear regression's gradient, there is no fragile p(1−p) in the denominator to blow up, and it is why the output-layer gradient in a neural network is also just ŷ − y."
+},
+"46:4": {
+"goal": "Show the loss has no local minima to get trapped in.",
+"plan": "Compute the Hessian and show it is never negative in any direction.",
+"steps": [
+"The Hessian is X'SX with S holding p(1−p) on the diagonal, and every one of those entries is strictly positive because p is strictly between 0 and 1.",
+"For any direction v, v'Hv becomes a sum of positive numbers times squares — which cannot be negative."
+],
+"payoff": "The loss is convex, so any point where the gradient vanishes is the global minimum and the starting point does not matter. But there is still no closed form, because setting the gradient to zero leaves a non-linear system — which is exactly why logistic regression is fitted by iteration and linear regression is not."
+},
+"50:0": {
+"goal": "Extend logistic regression from one probability to C probabilities that must add to 1.",
+"plan": "Give every class its own score, then normalise the scores into probabilities.",
+"steps": [
+"Each class gets its own weight vector, so instead of one score you get C of them. They are unbounded and do not yet mean anything probabilistic.",
+"Exponentiate each score, then divide by the total. Exponentiating makes everything positive; dividing by the sum forces them to add to exactly 1."
+],
+"payoff": "A valid probability distribution over all classes, and because the exponential is monotonic, the largest score is always the most probable class — so argmax over scores and argmax over probabilities agree."
+},
+"50:1": {
+"goal": "Check that softmax is a genuine generalisation of what we already had.",
+"plan": "Set C = 2 and simplify.",
+"steps": [
+"Write the two-class softmax explicitly.",
+"Divide top and bottom by e^z₁. Everything collapses into the sigmoid of the difference between the two scores."
+],
+"payoff": "Binary logistic regression is softmax with two classes. It also explains the redundancy: only the difference of the scores matters, so one class's weights can be fixed at zero without losing anything."
+},
+"55:0": {
+"goal": "Put a number on how mixed up a group is, so the tree can compare candidate questions.",
+"plan": "Borrow entropy from information theory.",
+"steps": [
+"Sum each class's proportion times its own log, and negate. It is zero when one class holds everything, and largest when the classes are evenly split.",
+"With two classes it reduces to a single-variable formula you can sketch: a hump peaking at p = 0.5."
+],
+"payoff": "A score for messiness. Base 2 is used so the answer reads as \"how many yes/no questions would it take to identify a random member\" — exactly one bit when it is a 50/50 coin flip."
+},
+"55:3": {
+"goal": "Work out a real information gain, with real numbers, so the formula stops being abstract.",
+"plan": "Measure the messiness before the split, then the weighted messiness after, and subtract.",
+"steps": [
+"The root has 9 yes and 5 no out of 14. Plug the proportions in: entropy 0.940, a very mixed group.",
+"Split on Outlook into three children and take the weighted average of their entropies — weighted by size, so a tiny pure child cannot dominate. One child is perfectly pure and contributes zero.",
+"Gain is just before minus after: 0.247."
+],
+"payoff": "Repeat for every feature and pick the biggest gain. Outlook's 0.247 beats Humidity's 0.152, so Outlook becomes the root. That loop, run at every node, is the entire tree-building algorithm."
+},
+"65:1": {
+"goal": "Show that AdaBoost's α formula is not a heuristic somebody guessed.",
+"plan": "State the loss AdaBoost is actually minimising, add one stump to the ensemble, and minimise over its weight.",
+"steps": [
+"The exponential loss punishes points where the prediction and the label disagree in sign, and punishes them exponentially hard.",
+"Adding one stump splits the loss into two groups: the points it got right, scaled by e^−α, and the ones it got wrong, scaled by e^+α. Everything else is already baked into the weights.",
+"Differentiate with respect to α, set to zero, and solve."
+],
+"payoff": "α = ½·ln((1−ε)/ε) falls straight out. A stump with ε = 0.5 gets α = 0 and is ignored automatically; one that is worse than chance gets a negative α and has its vote inverted. The weight-update rule comes from the same loss, so neither formula is invented."
+},
+"67:0": {
+"goal": "Explain why \"fit the next tree to the residuals\" works, instead of treating it as a recipe.",
+"plan": "Treat the model's predictions as the thing being optimised, and take a gradient step in that space.",
+"steps": [
+"Define the pseudo-residual as the negative derivative of the loss with respect to the current prediction — the direction that would most reduce the loss for that row.",
+"For squared loss that derivative is just −(y − F), so the pseudo-residual is exactly the ordinary residual.",
+"Fit a tree to those values and add a shrunken version of it to the model."
+],
+"payoff": "\"Fit the residuals\" is gradient descent, with the step taken in function space rather than parameter space. That reframing is what lets gradient boosting work with any differentiable loss, not only squared error."
+},
+"67:1": {
+"goal": "Make the same machinery work for classification.",
+"plan": "Work in log-odds space so predictions are unbounded, and differentiate the loss with respect to that.",
+"steps": [
+"Use log loss, with p obtained by passing the running prediction F through a sigmoid.",
+"Differentiate with respect to F rather than p. The p(1−p) from the sigmoid cancels against the denominator, leaving p − y — the same cancellation as logistic regression.",
+"Start from the log-odds of the base rate, so round one begins from the class balance rather than from nothing."
+],
+"payoff": "The pseudo-residual is y − p: label minus predicted probability. Each tree is still a plain regression tree fitted to numbers; only the numbers changed."
+},
+"68:0": {
+"goal": "Derive XGBoost's leaf values and split rule from the objective, rather than taking the similarity score on faith.",
+"plan": "Approximate the loss to second order, group rows by leaf, and minimise a quadratic.",
+"steps": [
+"Write the objective: loss after adding this tree, plus a complexity fee for the number of leaves and the size of the leaf values.",
+"Take a second-order Taylor expansion. Now every row is summarised by just two numbers, its gradient g and its curvature h — the actual loss function no longer appears.",
+"Every row in a leaf gets the same output, so sum the g's and h's within each leaf. The objective becomes a simple quadratic per leaf.",
+"Minimise that quadratic: differentiate, set to zero, solve. The optimal leaf value and the resulting score both fall out.",
+"For squared loss this score reduces exactly to the notes' similarity formula — the generic derivation and the specific recipe agree.",
+"Gain is the score after splitting minus the score before, with γ charged for the extra leaf."
+],
+"payoff": "Everything XGBoost does at a node — the leaf value, the similarity score, the gain, the pruning threshold — comes from this one quadratic. Nothing in the algorithm is a heuristic."
+},
+"72:0": {
+"goal": "Turn \"the widest street between the classes\" into a quantity we can maximise.",
+"plan": "Define the distance from a point to the plane, then remove the scale ambiguity.",
+"steps": [
+"The functional margin y(w'x + b) is positive when the point is on the correct side, but you can inflate it just by scaling w — so it cannot be maximised as it stands. Dividing by ‖w‖ gives the true perpendicular distance.",
+"Fix the scale by declaring the closest point to sit at exactly 1. The width of the street is then 2/‖w‖."
+],
+"payoff": "Maximising the margin becomes minimising ‖w‖, subject to every point being at least 1 away. A geometric wish is now a standard constrained optimisation."
+},
+"72:2": {
+"goal": "Rewrite the problem in a form that only involves dot products between data points.",
+"plan": "Lagrangian again: attach a multiplier to each constraint, then eliminate w and b.",
+"steps": [
+"Attach αᵢ ≥ 0 to each point's constraint and build the Lagrangian.",
+"Set the derivatives to zero. The first gives w as a weighted sum of the training points themselves — the model is literally built out of the data.",
+"Substitute that back in. w and b disappear entirely, leaving an objective in the α's where the data appears only inside dot products xᵢ·xⱼ."
+],
+"payoff": "Two consequences. Points with αᵢ = 0 contribute nothing, so only the support vectors matter — and since the data only ever appears as dot products, you can swap in a kernel later without touching anything else."
+},
+"73:0": {
+"goal": "Handle data where no straight line separates the classes perfectly, so the hard-margin problem has no solution at all.",
+"plan": "Let each point break its constraint by an amount ξᵢ, and charge for it.",
+"steps": [
+"Relax every constraint by its own slack ξᵢ, and add C times the total slack to the objective. C is the price of breaking a rule.",
+"The slack is zero for well-behaved points and grows as a point pushes past its margin line."
+],
+"payoff": "The sum of slacks upper-bounds the number of training mistakes, so the objective explicitly trades margin width against errors. Large C means intolerant and narrow; small C means relaxed and wide."
+},
+"73:1": {
+"goal": "Show that the soft-margin SVM is a familiar kind of model in disguise.",
+"plan": "Substitute the optimal slack back in and look at the shape of what remains.",
+"steps": [
+"At the optimum ξᵢ equals max(0, 1 − y·f(x)) exactly. Substituting it eliminates the constraints and leaves an unconstrained objective.",
+"Divide through by C and rename 1/C as λ."
+],
+"payoff": "It is hinge loss plus L2 regularisation. The SVM is not a different species from logistic regression — it is the same template with a different loss, which is why C behaves like an inverse λ."
+},
+"73:2": {
+"goal": "See what changes in the dual once slack is allowed.",
+"plan": "Repeat the Lagrangian derivation with the extra constraints.",
+"steps": [
+"The dual objective is identical to the hard-margin one. The only change is that each αᵢ is now capped at C — the box constraint.",
+"The KKT conditions then sort every training point into exactly three groups by its α."
+],
+"payoff": "α = 0 means the point is irrelevant; 0 < α < C means it sits exactly on the margin; α = C means it has intruded. That three-way split is what the solver reports as support vectors, and C is the only thing that changed."
+},
+"74:0": {
+"goal": "Work in a vastly higher-dimensional space without ever building it.",
+"plan": "Look carefully at where the data actually appears in the dual and in the prediction rule.",
+"steps": [
+"In the dual, the training points only ever appear inside dot products with each other.",
+"In the prediction rule, the new point only appears inside dot products with the support vectors. The raw coordinates never stand alone anywhere.",
+"So define a kernel that returns the dot product in the target space directly."
+],
+"payoff": "If K can be computed cheaply, the model behaves exactly as if you had mapped everything into that huge space — at no point do you construct a single coordinate in it. The RBF kernel corresponds to an infinite-dimensional space, which you could never build but can compute in one line."
+},
+"75:0": {
+"goal": "Pick the most probable class given the evidence, when modelling all the evidence jointly is impossible.",
+"plan": "Bayes' rule to flip the conditional, then one bold assumption to make the likelihood countable.",
+"steps": [
+"Bayes' rule rewrites P(class | evidence) in terms of P(evidence | class), which is the direction we can estimate by counting.",
+"The denominator is the same for every class, so it cannot change which class wins. Drop it.",
+"Here is the problem and the fix: the joint likelihood would need counts for every combination of words. Assuming the features are independent given the class turns one impossible joint into a product of d easy ones.",
+"Take logs so a product of hundreds of small probabilities becomes a sum."
+],
+"payoff": "Exponentially many parameters become d per class — countable from ordinary data. The independence assumption is false for real text, but it only has to rank classes correctly, not produce honest probabilities, and for ranking it usually does."
+},
+"75:1": {
+"goal": "Run the formula on real counts, and expose the failure mode that forces smoothing.",
+"plan": "Compute both class scores, normalise, then deliberately break it.",
+"steps": [
+"Read the priors off the class balance, and the per-word likelihoods off the counts.",
+"Same for the other class.",
+"Multiply prior by likelihoods for each class. Ham scores higher here, so the mail is classified ham.",
+"Now the break: if a word never appeared in a class, its probability is exactly 0, and one zero annihilates the entire product no matter how strong the other evidence is. Laplace smoothing adds α to every count."
+],
+"payoff": "With α = 1 no single unseen word can veto a class. This is why smoothing is not optional housekeeping — without it a single novel word silently decides the prediction."
+},
+"76:0": {
+"goal": "Show that K-Means' two steps are not arbitrary, and that it must terminate.",
+"plan": "Write the quantity being minimised, then show each step minimises it exactly, holding the other thing fixed.",
+"steps": [
+"Define WCSS: total squared distance from each point to its own centroid. This is the single number the algorithm is driving down.",
+"Step A, centroids fixed: each point independently picks the nearest centroid, which is obviously the best it can do. Step B, assignment fixed: set the derivative to zero and the minimiser is the mean of the cluster."
+],
+"payoff": "The mean is not a sensible-sounding choice — it is provably the exact minimiser. Since both steps can only lower WCSS and there are finitely many assignments, the algorithm must stop. It stops at a local minimum, though, which is why you restart it several times."
+},
+"76:1": {
+"goal": "Choose K with something better than squinting at an elbow.",
+"plan": "Score every point on how well it sits in its own cluster versus the next-best one.",
+"steps": [
+"a is how far a point is from its own clustermates — small is good.",
+"b is how far it is from the nearest other cluster — large is good.",
+"The silhouette combines them into one number between −1 and 1."
+],
+"payoff": "Near 1 means comfortably inside its cluster; near 0 means on a boundary; negative means it is probably in the wrong cluster. Averaging over all points gives a real criterion you can maximise over K, rather than eyeballing a bend in a curve."
+}
+}

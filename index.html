@@ -1,0 +1,47 @@
+<title>Poise's ML Lab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:ital,wght@0,400;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+
+<button id="rail-toggle" class="rail-toggle" aria-controls="rail" aria-expanded="true" title="Show / hide the sidebar">✕</button>
+
+<div class="shell">
+  <nav class="rail" id="rail">
+    <a class="brand" href="#map">
+      <span class="logo">🧪</span>
+      <span><b>Poise's ML Lab</b><span>83 topics · 0 flashcards</span></span>
+    </a>
+
+    <button class="navbtn" data-route="map">🗺️ <span>The Map</span><span class="k">1</span></button>
+    <button class="navbtn" data-route="lesson">📖 <span>Lesson</span><span class="k">2</span></button>
+    <button class="navbtn" data-route="labs">🔬 <span>Model Labs</span><span class="k">3</span></button>
+    <button class="navbtn" data-route="arena">🏆 <span>Arena</span><span class="k">4</span></button>
+    <button class="navbtn" data-route="trophy">🏅 <span>Badges</span><span class="k">5</span></button>
+
+    <div class="budget">
+      <h4>⏱️ Time budget</h4>
+      <div class="clock" id="clk-left">20:00:00</div>
+      <div class="bar"><i id="clk-bar" style="width:0%"></i></div>
+      <div class="row"><span id="clk-used">0:00:00 used</span><span id="clk-pace"></span></div>
+      <div class="row" style="margin-top:4px"><span id="clk-need">—</span></div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <button class="btn sm ghost" id="clk-toggle" style="flex:1">⏸ Pause</button>
+        <button class="btn sm ghost" id="clk-reset" title="Reset the 20-hour budget">↺</button>
+      </div>
+    </div>
+    <button class="navbtn" id="theme-btn" style="margin-top:4px">🌗 <span>Theme</span></button>
+  </nav>
+
+  <main class="main" id="view"></main>
+</div>
+
+<div id="dock">
+  <div id="bubble"><span class="nm">Poise</span><span id="bubble-txt">Booting. Give me a second, my circuits are full of cookie crumbs.</span></div>
+  <div id="poise" class="st-bob"></div>
+</div>
+
+<canvas id="confetti" hidden></canvas>
+
+<script src="mascots.js"></script>
+<script src="explain.js"></script>
+<script src="labs.js"></script>
+<script src="app.js"></script>
